@@ -1,5 +1,8 @@
 <?php
 
+declare( strict_types = 1 );
+
+namespace premiumwebtechnologies\php7to5;
 
 interface IPHP7To5
 {
