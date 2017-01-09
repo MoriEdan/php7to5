@@ -6,5 +6,5 @@ namespace premiumwebtechnologies\php7to5;
 
 interface IPHP7To5
 {
-    public static function parse_content( string $content );
+    public static function parse_content(string $content);
 }
