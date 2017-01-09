@@ -1,5 +1,6 @@
 <?php
 
+//include('vendor/autoload.php');
 include('src/iphp7to5.php');
 include('src/php7to5.php');
 
@@ -10,25 +11,28 @@ class PHP7To5Test extends PHPUnit_Framework_TestCase
     public function testParseContent()
     {
 
-        $content = "\nfunction abc():string;\nfunction abc():int;\nfunction abc():float;\nfunction abc():bool;";
+        $content = 'function abc($c, string $s, bool $b, float $f, double $ddd, int $p);';
         $content = \premiumwebtechnologies\php7to5\PHP7To5::parse_content($content);
-        $this->assertTrue($content=="\nfunction abc();\nfunction abc();\nfunction abc();\nfunction abc();", "true didn't end up being false!");
+        var_dump($content);
+        $this->assertTrue($content=='function abc($c, $s, $b, $f, $ddd, $p);', "true didn't end up being false!");
 
-        $content = "\nfunction abc():string{";
+        $content = "\nfunction abc():\ZipArchive;";
+        $content = \premiumwebtechnologies\php7to5\PHP7To5::parse_content($content);
+        $this->assertTrue($content=="\nfunction abc();", "true didn't end up being false!");
+
+        $content = "\nfunction abc():\ZipArchive{";
         $content = \premiumwebtechnologies\php7to5\PHP7To5::parse_content($content);
         $this->assertTrue($content=="\nfunction abc(){", "true didn't end up being false!");
 
-        $content = "\nfunction abc():string";
+        $content = "\nfunction abc():\ZipArchive";
         $content = \premiumwebtechnologies\php7to5\PHP7To5::parse_content($content);
         $this->assertTrue($content=="\nfunction abc()", "true didn't end up being false!");
 
     }
 
-    public function testParseDirectory()
+    public function testToZip()
     {
-        $parsedFiles = array();
-        $parsedFiles = \premiumwebtechnologies\php7to5\PHP7To5::parse_directory('src',$parsedFiles);
-        var_dump($parsedFiles);
+        $zip = \premiumwebtechnologies\php7to5\PHP7To5::toZip('sample');
     }
 
 }

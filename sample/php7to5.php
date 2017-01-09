@@ -32,7 +32,7 @@ class PHP7To5 implements IPHP7To5
             foreach (new \DirectoryIterator($directory) as $fileInfo) {
                 if (!$fileInfo->isDot()) {
                     if ($fileInfo->isDir()) {
-                        $zip = self::parse_directory($zip, $fileInfo->getPathname());
+                        $zip = parse_directory($zip, $directory);
                     } else {
                         $zip->addFromString(
                             $fileInfo->getPathname(),
@@ -54,13 +54,9 @@ class PHP7To5 implements IPHP7To5
         $content = preg_replace("/\)\s*\:[\\a-zA-Z]*\s*\{/", "){", $content);
 
         // Remove ):[type] from end of lines.
-        $content = preg_replace("/\)\s*\:[\\a-zA-Z]*\s*$/", ")", $content);
-
-        // Remove type hint for the first parameter
-        $content = str_replace('( ', '(', preg_replace("/(function\s[\_a-zA-Z]*\s*)\(\s*[a-zA-Z]*(.*)/", "\\1(\\2", $content));
-
-        // Remove type hint for the rest of the parameters.
-        $content = preg_replace("/\,\s*[a-zA-Z]*\s*/", ", ", $content);
+        $count = 0;
+        $content = preg_replace("/\)\s*\:[\\a-zA-Z]*\s*$/", ")", $content, -1, $count);
+        var_dump($count);
 
         return $content;
     }
